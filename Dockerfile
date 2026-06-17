@@ -19,13 +19,17 @@ WORKDIR /app
 
 COPY . .
 
+RUN rm -rf public/storage || true
+RUN php artisan storage:link || true
+
 RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install
 RUN npm run build
 
 RUN php artisan config:clear
+RUN php artisan cache:clear
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "php artisan storage:link && php artisan serve --host=0.0.0.0 --port=${PORT}"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
