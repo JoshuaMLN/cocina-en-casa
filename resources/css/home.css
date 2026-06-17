@@ -1,7 +1,7 @@
 /* ------------------------ */
 /* Container main */
 /* ------------------------ */
-.bg-main-container {
+.bg-container {
     background-color: #fcf8f4
 }
 
@@ -123,6 +123,14 @@
     padding: 15px;
 }
 
+.swiper-platos {
+    padding-bottom: 2rem; 
+}
+
+.swiper-platos:has(.swiper-pagination-lock) {
+    padding-bottom: 1rem !important;
+}
+
 @media (min-width: 767.98px) and (max-width: 991.98px) {
     
     .container-platos .swiper {
@@ -139,9 +147,10 @@
     .container-platos .swiper {
         margin-right: 2rem !important;
         margin-left: 2rem !important;
+
+        padding-bottom: 2.0rem !important;
     }
 }
-    
 
 .container-platos h5 {
     font-size: 18px;
@@ -188,6 +197,28 @@
 /* ------------------------ */
 .container-operation {
     align-items: top;
+}
+
+/* Contenedor del título con posición relativa para ubicar la línea */
+.title-curved-line {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Creamos la línea curva decorativa debajo */
+.title-curved-line::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -12px;               /* Separación respecto al texto */
+
+    width: 60px;                 
+    height: 6px;     
+
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0; /* Efecto arco hacia arriba */
 }
 
 .container-operation .arrow {

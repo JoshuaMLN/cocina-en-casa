@@ -17,6 +17,10 @@
     --primary-dim-color: #6e513b;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .text-color {
     color: var(--primary-color);
 }

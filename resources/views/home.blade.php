@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div class="bg-main-container">
+<div class="bg-container">
     <div class="container main-container">
         <div class="row align-items-center h-100">
             <div class="container-text col-md-6 text-center text-md-start pe-4 my-auto">
@@ -57,7 +57,7 @@
 
 {{-- CARRUSEL DE PLATOS --}}
 <div class="container container-platos mt-5 position-relative">
-    <div class="swiper swiper-platos pb-5">
+    <div class="swiper swiper-platos">
         <div class="swiper-wrapper">
             @forelse($platos as $plato)
 
@@ -74,7 +74,7 @@
                                 {{ $plato->nombre }}
                             </h5>
                             @if($plato->descripcion)
-                                <p class="text-muted small">
+                                <p class="mb-0 text-muted small">
                                     {{ $plato->descripcion }}
                                 </p>
                             @endif
@@ -100,58 +100,60 @@
 </div>
 
 {{-- COMO FUNCIONA --}}
-<div class="container mt-4 mb-5 position-relative">
-    <h3 class="text-center mb-4">¿Cómo Funciona?</h3>
-    <div class="container-operation row mx-2 mx-sm-0 g-4 g-lg-0">
-        <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
-            <div class="circle-number">
-                <span>1</span>
+<div id="como-funciona" class="bg-container">
+    <div class="container pt-3 mt-2 pb-3 mb-2 position-relative">
+        <h3 class="text-center fw-bold mb-4 title-curved-line">¿Cómo Funciona?</h3>
+        <div class="container-operation row mx-2 mx-sm-0 g-4 g-lg-0">
+            <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
+                <div class="circle-number">
+                    <span>1</span>
+                </div>
+                <div class="circle-icon">
+                    <i class="bi bi-clipboard2-check"></i>
+                </div>
+                <div class="container-text">
+                    <h6>1. Nos contactas</h6>
+                    <small>Completa el formulario o escríbrenos al Whatsapp.</small>
+                </div>
             </div>
-            <div class="circle-icon">
-                <i class="bi bi-clipboard2-check"></i>
+            <div class="d-none d-lg-block col-auto arrow text-muted"><x-arrow-dash /></div>
+            <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
+                <div class="circle-number bg-green">
+                    <span>2</span>
+                </div>
+                <div class="circle-icon">
+                    <img class="color-green" src="{{ asset('icons/chef-icon.png') }}" alt="Icono Chef">
+                </div>
+                <div class="container-text">
+                    <h6>2. Te asesoramos</h6>
+                    <small>Te ayudamos a elegir la mejor opción según tus necesidades.</small>
+                </div>
             </div>
-            <div class="container-text">
-                <h6>1. Nos contactas</h6>
-                <small>Completa el formulario o escríbrenos al Whatsapp.</small>
+            <div class="d-none d-lg-block col-auto arrow text-muted"><x-arrow-dash /></div>
+            <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
+                <div class="circle-number">
+                    <span>3</span>
+                </div>
+                <div class="circle-icon">
+                    <img class="color" src="{{ asset('icons/bandeja-de-comida-icon.png') }}" alt="Icono Chef">
+                </div>
+                <div class="container-text">
+                    <h6>3. Preparamos en tu hogar</h6>
+                    <small>Llegamos a tu casa y preparamos la comida que necesitas.</small>
+                </div>
             </div>
-        </div>
-        <div class="d-none d-lg-block col-auto arrow text-muted"><x-arrow-dash /></div>
-        <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
-            <div class="circle-number bg-green">
-                <span>2</span>
-            </div>
-            <div class="circle-icon">
-                <img class="color-green" src="{{ asset('icons/chef-icon.png') }}" alt="Icono Chef">
-            </div>
-            <div class="container-text">
-                <h6>2. Te asesoramos</h6>
-                <small>Te ayudamos a elegir la mejor opción según tus necesidades.</small>
-            </div>
-        </div>
-        <div class="d-none d-lg-block col-auto arrow text-muted"><x-arrow-dash /></div>
-        <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
-            <div class="circle-number">
-                <span>3</span>
-            </div>
-            <div class="circle-icon">
-                <img class="color" src="{{ asset('icons/bandeja-de-comida-icon.png') }}" alt="Icono Chef">
-            </div>
-            <div class="container-text">
-                <h6>3. Preparamos en tu hogar</h6>
-                <small>Llegamos a tu casa y preparamos la comida que necesitas.</small>
-            </div>
-        </div>
-        <div class="d-none d-lg-block col-auto arrow text-muted"><x-arrow-dash /></div>
-        <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
-            <div class="circle-number bg-green">
-                <span>4</span>
-            </div>
-            <div class="circle-icon color-green">
-                <i class="fa-regular fa-face-smile"></i>
-            </div>
-            <div class="container-text">
-                <h6>4. Tú disfrutas</h6>
-                <small>Disfruta de una deliciosa comida casera sin preocuparte por nada.</small>
+            <div class="d-none d-lg-block col-auto arrow text-muted"><x-arrow-dash /></div>
+            <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
+                <div class="circle-number bg-green">
+                    <span>4</span>
+                </div>
+                <div class="circle-icon color-green">
+                    <i class="fa-regular fa-face-smile"></i>
+                </div>
+                <div class="container-text">
+                    <h6>4. Tú disfrutas</h6>
+                    <small>Disfruta de una deliciosa comida casera sin preocuparte por nada.</small>
+                </div>
             </div>
         </div>
     </div>

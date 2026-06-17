@@ -9,7 +9,7 @@
             @endphp
             {{-- Si existe el logo, mostramos la imagen --}}
             @if($logoSetting && $logoSetting->value)
-                <img src="{{ asset('storage/' . $logoSetting->value) }}" alt="Logo Cocina en Casa" height="40" class="me-3 object-fit-contain">
+                <img src="{{ asset('storage/' . $logoSetting->value) }}" alt="" height="40" class="me-3 object-fit-contain">
             @else
                 {{-- Si no hay logo en la BD, mostramos el ícono por defecto --}}
                 <i class="fa-solid fa-utensils text-color me-3 fs-1"></i>
@@ -39,7 +39,7 @@
                 </li>
 
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="#">Cómo funciona</a>
+                    <a class="nav-link" href="#como-funciona">Cómo funciona</a>
                 </li>
 
                 <li class="nav-item mx-3">
