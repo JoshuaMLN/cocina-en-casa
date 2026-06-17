@@ -22,35 +22,41 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $codigoPais = Setting::where(
-            'key',
-            'whatsapp_country_code'
-        )->value('value') ?? '51';
+        try {
 
-        $numero = Setting::where(
-            'key',
-            'whatsapp_number'
-        )->value('value');
+            if (!Schema::hasTable('settings')) {
+                return;
+            }
 
-        $mensaje = Setting::where(
-            'key',
-            'whatsapp_message'
-        )->value('value');
+            $codigoPais = Setting::where(
+                'key',
+                'whatsapp_country_code'
+            )->value('value') ?? '51';
 
-        // Número completo
-        $whatsapp = $codigoPais . $numero;
+            $numero = Setting::where(
+                'key',
+                'whatsapp_number'
+            )->value('value');
 
-        // URL base
-        $urlWhatsapp = "https://wa.me/$whatsapp";
+            $mensaje = Setting::where(
+                'key',
+                'whatsapp_message'
+            )->value('value');
 
-        // Agregar mensaje si existe
-        if (!empty($mensaje)) {
-            $urlWhatsapp .= '?text=' . urlencode($mensaje);
+            $whatsapp = $codigoPais . $numero;
+
+            $urlWhatsapp = "https://wa.me/$whatsapp";
+
+            if (!empty($mensaje)) {
+                $urlWhatsapp .= '?text=' . urlencode($mensaje);
+            }
+
+            View::share('whatsapp', $whatsapp);
+            View::share('whatsapp_message', $mensaje);
+            View::share('whatsapp_url', $urlWhatsapp);
+
+        } catch (\Throwable $e) {
+            // Ignorar errores durante build/deploy
         }
-
-        // Compartir en vistas
-        View::share('whatsapp', $whatsapp);
-        View::share('whatsapp_message', $mensaje);
-        View::share('whatsapp_url', $urlWhatsapp);
     }
 }
