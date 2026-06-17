@@ -1,0 +1,4 @@
+#countrySelect + .ts-wrapper {
+    width: 120px !important;
+    flex: 0 0 80px !important;
+}

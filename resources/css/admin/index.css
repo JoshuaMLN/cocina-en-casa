@@ -1,0 +1,18 @@
+@import './tabs/general.css';
+@import './tabs/platos.css';
+
+.container-image-crop {
+    height: 500px;
+    max-height: 60vh;
+    overflow: hidden;
+}
+.container-image-crop .image-crop {
+    max-width: 100%;
+    display: block;
+}
+.container-cropped-preview {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 10px;
+}

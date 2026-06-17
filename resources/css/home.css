@@ -1,0 +1,274 @@
+/* ------------------------ */
+/* Container main */
+/* ------------------------ */
+.bg-main-container {
+    background-color: #fcf8f4
+}
+
+.main-container {
+    background-image: url('/public/images/fondo-container-main-zoom-no.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    height: 450px;
+}
+
+@media (min-width: 767.98px) and (max-width: 991.98px) {
+    .main-container {
+        height: 350px;
+    }
+    .main-container h1 {
+        font-size: 36px;
+    }
+    .main-container .lead {
+        font-size: 16px;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    .main-container .main-icons {
+        margin-top: 10px !important;
+    }
+    .main-container .main-icons .col {
+        padding: 5px !important;
+        max-width: 80px !important;
+    }
+    .main-container .main-icons .col i {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 20px !important;
+    }
+    .main-container .main-icons .col small {
+        margin-top: 5px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+    }
+
+    .main-container .containet-btn-main i {
+        font-size: 22px !important;
+    }
+
+    .main-container .container-btn-main span {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .main-container {
+        height: 400px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .main-container {
+        background-image: none;
+    }
+    .main-container .lead {
+        padding-right: 0px !important;
+    }
+    .main-container .main-icons,
+    .main-container .container-btn-main
+    {
+        justify-content: center;
+    }
+    .main-container .container-text {
+        padding-right: 12px !important;
+    }
+}
+
+.main-container .btn-contactar {
+    background-color: white;
+    border: solid 2px #dee2e6;
+    color: var(--primary-color);
+}
+
+.main-container .btn-contactar:hover {
+    background-color: var(--primary-bg);
+    border: solid 2px #dee2e6;
+    color: var(--primary-color);
+}
+
+/* Iconos */
+.main-container .main-icons {
+    gap: 3%;
+}
+
+.main-container .main-icons .col {
+    background-color: #fcf8f4;
+    border-radius: 10px;
+    max-width: 110px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.main-container .main-icons .col i {
+    width: 48px;
+    height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background-color: var(--primary-bg);
+
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+/* ------------------------ */
+/* Carrusel */
+/* ------------------------ */
+
+.container-platos .card-body {
+    padding: 15px;
+}
+
+@media (min-width: 767.98px) and (max-width: 991.98px) {
+    
+    .container-platos .swiper {
+        padding-bottom: 1.5rem !important;
+    }
+
+    .container-platos img {
+        height: 150px !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    
+    .container-platos .swiper {
+        margin-right: 2rem !important;
+        margin-left: 2rem !important;
+    }
+}
+    
+
+.container-platos h5 {
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+/* Ajuste de flechas de Swiper */
+.container-platos .swiper-button-prev,
+.container-platos .swiper-button-next {
+    /* 1. Prevenir selección de texto accidental (El punto 3 que pediste) */
+    user-select: none;
+    -webkit-user-select: none;
+    
+    /* 2. Diseño más limpio */
+    width: 40px;
+    height: 40px;
+    background-color: white; /* Fondo blanco redondo para que resalten */
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    top: 50%; /* Centrado vertical */
+    transform: translateY(-50%);
+}
+
+/* Hacemos el ícono de la flecha un poco más pequeño y centrado */
+.container-platos .swiper-button-prev::after,
+.container-platos .swiper-button-next::after {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Colocamos las flechas en los extremos absolutos del contenedor padre */
+.container-platos .swiper-button-prev { left: 0px; }
+.container-platos .swiper-button-next { right: 0px; }
+
+/* Separación visual de los puntitos de paginación */
+.container-platos .swiper-pagination-bullet-active {
+    background-color: #212529; /* Color oscuro para el punto activo */
+}
+
+.container-platos
+
+/* ------------------------ */
+/* Como Funciona (Operation) */
+/* ------------------------ */
+.container-operation {
+    align-items: top;
+}
+
+.container-operation .arrow {
+    margin-top: 65px;
+}
+
+.circle-number {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;        /* Forma circular perfecta */
+    
+    /* Centrado absoluto con Flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    z-index: 2;
+    margin-bottom: -5px;
+}
+
+.circle-number.bg-green {
+    background-color: #009200 !important;
+}
+
+.circle-number span {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.circle-icon {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    color: var(--primary-dim-color);
+    border-radius: 50%;        /* Forma circular perfecta */
+    border: solid 1px #b6b6b665;
+    
+    /* Centrado absoluto con Flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-bottom: 15px;
+
+}
+
+.circle-icon.color-green {
+    color: #009200 !important;
+}
+
+.circle-icon i {
+    font-size: 56px; /* Tamaño del ícono proporcional a los 80px */
+    line-height: 1;  /* Evita que márgenes internos del texto desalinien el ícono */
+}
+
+.circle-icon img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;   /* Evita que la imagen se estire o se deforme */
+    display: block;        /* Elimina espacios fantasma debajo de la imagen */
+}
+
+.circle-icon img.color-green {
+    filter: invert(30%) sepia(91%) saturate(2862%) hue-rotate(106deg) brightness(94%) contrast(104%);
+}
+
+.circle-icon img.color {
+    filter: invert(30%) sepia(44%) saturate(390%) hue-rotate(344deg) brightness(96%) contrast(91%);
+}
+
+.container-operation .container-text {
+    text-align: center;
+}
+
+.container-operation .container-text h6 {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.container-operation .container-text small {
+    font-size: 15px;
+}

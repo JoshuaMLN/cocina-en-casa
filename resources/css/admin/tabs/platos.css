@@ -1,0 +1,29 @@
+.drag-handle{
+    cursor: grab;
+    width: 40px;
+    color: #6c757d;
+}
+.drag-handle:active{
+    cursor: grabbing;
+}
+
+.h-max-250 {
+    max-height:250px;
+}
+
+.sortable-ghost {
+    opacity: .4;
+}
+
+.col-sorteable {
+    width: 40px;
+}
+.col-imagen {
+    width: 90px;
+}
+.col-estado {
+    width: 120px;
+}
+.col-acciones {
+    width: 180px;
+}
