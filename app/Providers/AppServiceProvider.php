@@ -22,11 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        try {
+        $whatsapp = '';
+        $mensaje = '';
+        $urlWhatsapp = '#';
 
-            if (!Schema::hasTable('settings')) {
-                return;
-            }
+        try {
 
             $codigoPais = Setting::where(
                 'key',
@@ -51,12 +51,12 @@ class AppServiceProvider extends ServiceProvider
                 $urlWhatsapp .= '?text=' . urlencode($mensaje);
             }
 
-            View::share('whatsapp', $whatsapp);
-            View::share('whatsapp_message', $mensaje);
-            View::share('whatsapp_url', $urlWhatsapp);
-
         } catch (\Throwable $e) {
             logger()->error($e->getMessage());
         }
+
+        View::share('whatsapp', $whatsapp);
+        View::share('whatsapp_message', $mensaje);
+        View::share('whatsapp_url', $urlWhatsapp);
     }
 }
