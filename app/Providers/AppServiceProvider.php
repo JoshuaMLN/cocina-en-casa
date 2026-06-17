@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
             View::share('whatsapp_url', $urlWhatsapp);
 
         } catch (\Throwable $e) {
-            // Ignorar errores durante build/deploy
+            logger()->error($e->getMessage());
         }
     }
 }
