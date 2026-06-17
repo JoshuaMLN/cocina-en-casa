@@ -28,8 +28,7 @@ RUN npm install
 RUN npm run build
 
 RUN php artisan config:clear
-RUN php artisan cache:clear
 
 EXPOSE 10000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
+CMD ["sh", "-c", "php artisan optimize:clear && php artisan serve --host=0.0.0.0 --port=${PORT}"]
