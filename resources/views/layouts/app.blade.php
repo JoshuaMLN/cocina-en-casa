@@ -24,6 +24,10 @@
             @yield('content')
         </main>
 
+        @unless(request()->routeIs('admin.*'))
+            @include('partials.footer')
+        @endunless
+
         {{-- BOTON FLOTANTE DE WSP (OPCIONAL) --}}
         <a href="{{ $whatsapp_url }}" class="whatsapp-float btn-whatsapp d-none" target="_blank">
             <i class="fa-brands fa-whatsapp"></i> Reservar ahora
