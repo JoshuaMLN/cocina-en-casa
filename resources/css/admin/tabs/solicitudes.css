@@ -1,0 +1,35 @@
+.solicitud-unread-column {
+    width: 28px;
+}
+
+.solicitud-unread-row {
+    --bs-table-bg: rgba(255, 240, 221, 0.55);
+}
+
+.solicitud-unread-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.solicitud-email {
+    max-width: 230px;
+}
+
+.solicitud-message-preview {
+    min-width: 220px;
+    max-width: 360px;
+    color: #6c757d;
+}
+
+.solicitud-full-message {
+    min-height: 90px;
+    padding: 14px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}

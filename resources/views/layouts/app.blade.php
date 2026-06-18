@@ -14,7 +14,11 @@
     </head>
     <body class="bg-light">
 
-        @include('partials.navbar') {{-- NAVBAR --}}
+        @hasSection('navbar')
+            @yield('navbar')
+        @else
+            @include('partials.navbar')
+        @endif
 
         <main>
             @yield('content')

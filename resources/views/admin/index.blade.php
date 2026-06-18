@@ -2,6 +2,10 @@
 
 @section('title', 'Panel de Control')
 
+@section('navbar')
+    @include('admin.partials.navbar')
+@endsection
+
 @push('styles')
     @vite('resources/css/admin/index.css')
 @endpush
@@ -10,17 +14,7 @@
 
 <div class="container mt-5 mb-5">
 
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h2 class="mb-0">Panel de Administración</h2>
-        
-        <!-- Formulario Seguro de Cierre de Sesión -->
-        <form action="{{ route('admin.logout') }}" method="POST" id="logoutForm">
-            @csrf
-            <button type="submit" class="btn btn-outline-danger btn-sm fw-semibold py-2 px-3">
-                Cerrar Sesión <i class="bi bi-box-arrow-right ms-1"></i>
-            </button>
-        </form>
-    </div>
+    <h2 class="mb-0">Panel de Administración</h2>
     <hr>
 
     <div id="tabs-spinner" class="d-flex justify-content-center align-items-center my-3">
@@ -48,6 +42,20 @@
                 aria-selected="false">
                 Platos
             </button>
+
+            <button type="button" class="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#solicitudes"
+                role="tab"
+                aria-controls="solicitudes"
+                aria-selected="false">
+                Solicitudes
+                <span id="solicitudesUnreadBadge"
+                    class="badge rounded-pill text-bg-danger ms-1 {{ $solicitudesNoLeidas === 0 ? 'd-none' : '' }}"
+                    data-count="{{ $solicitudesNoLeidas }}">
+                    {{ $solicitudesNoLeidas }}
+                </span>
+            </button>
         </div>
 
         <div class="tab-content pt-4">
@@ -56,6 +64,9 @@
             </div>
             <div class="tab-pane fade" id="platos">
                 @include('admin.tabs.platos')
+            </div>
+            <div class="tab-pane fade" id="solicitudes">
+                @include('admin.tabs.solicitudes')
             </div>
         </div>
 

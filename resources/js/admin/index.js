@@ -1,5 +1,6 @@
 import './tabs/general.js';
 import './tabs/platos.js';
+import './tabs/solicitudes.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -11,7 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
     // Recuperar último tab abierto
-    const activeTab = localStorage.getItem('adminActiveTab');
+    const queryParams = new URLSearchParams(window.location.search);
+    const activeTab = queryParams.has('solicitudes_page')
+        ? '#solicitudes'
+        : localStorage.getItem('adminActiveTab');
 
     if (activeTab) {
 
