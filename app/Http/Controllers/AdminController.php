@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 use App\Models\Setting;
 use App\Models\Plato;
+use App\Models\SolicitudServicio;
 
 
 class AdminController extends Controller
@@ -18,26 +20,118 @@ class AdminController extends Controller
        ========================== */
     public function index()
     {
-        $codigoPais = Setting::where(
-            'key',
-            'whatsapp_country_code'
-        )->value('value') ?? '51';
+        $settings = Setting::whereIn('key', [
+            'navbar_logo',
+            'whatsapp_country_code',
+            'whatsapp_number',
+            'whatsapp_message',
+            'nosotros_imagen',
+            'nosotros_mensaje',
+            'nosotros_slogan',
+            'nosotros_descripcion',
+            'nosotros_palabras_clave',
+            'footer_description',
+            'footer_service_area',
+            'contact_email',
+            'social_facebook',
+            'social_instagram',
+            'social_tiktok',
+        ])->pluck('value', 'key');
 
-        $numero = Setting::where(
-            'key',
-            'whatsapp_number'
-        )->value('value');
+        $logo = $settings->get('navbar_logo');
+        $codigoPais = $settings->get('whatsapp_country_code', '51');
+        $numero = $settings->get('whatsapp_number');
+        $mensaje = $settings->get('whatsapp_message');
 
-        $mensaje = Setting::where(
-            'key',
-            'whatsapp_message'
-        )->value('value');
+        $palabrasClave = json_decode(
+            $settings->get('nosotros_palabras_clave', '[]'),
+            true
+        );
+
+        if (! is_array($palabrasClave) || empty($palabrasClave)) {
+            $palabrasClave = [
+                'Sabor casero',
+                'Atención cercana',
+                'En tu hogar',
+            ];
+        }
+
+        $nosotros = [
+            'imagen' => $settings->get('nosotros_imagen'),
+            'mensaje' => $settings->get(
+                'nosotros_mensaje',
+                'Cocinamos con dedicación'
+            ),
+            'slogan' => $settings->get(
+                'nosotros_slogan',
+                'Somos un equipo apasionado por la cocina casera y por crear momentos especiales alrededor de la mesa.'
+            ),
+            'descripcion' => $settings->get(
+                'nosotros_descripcion',
+                'Llevamos a tu hogar una experiencia cálida, práctica y confiable, preparando cada plato con ingredientes seleccionados y el cuidado que merece tu familia.'
+            ),
+            'palabras_clave' => array_slice($palabrasClave, 0, 3),
+        ];
+
+        $footer = [
+            'description' => $settings->get(
+                'footer_description',
+                'Comida casera preparada con dedicación en la comodidad de tu hogar.'
+            ),
+            'service_area' => $settings->get('footer_service_area', ''),
+            'email' => $settings->get('contact_email', ''),
+            'facebook' => $settings->get('social_facebook', ''),
+            'instagram' => $settings->get('social_instagram', ''),
+            'tiktok' => $settings->get('social_tiktok', ''),
+        ];
 
         $platos = Plato::orderBy('orden')->get();
+        $solicitudes = SolicitudServicio::latest()
+            ->paginate(15, ['*'], 'solicitudes_page');
+        $solicitudesNoLeidas = SolicitudServicio::whereNull(
+            'leido_at'
+        )->count();
 
         return view(
             'admin.index',
-            compact('codigoPais', 'numero', 'mensaje', 'platos')
+            compact(
+                'logo',
+                'codigoPais',
+                'numero',
+                'mensaje',
+                'nosotros',
+                'footer',
+                'platos',
+                'solicitudes',
+                'solicitudesNoLeidas'
+            )
+        );
+    }
+
+    /* ==========================
+       FOOTER
+       ========================== */
+    public function updateFooter(Request $request)
+    {
+        $data = $request->validate([
+            'footer_description' => 'nullable|string|max:180',
+            'footer_service_area' => 'nullable|string|max:120',
+            'contact_email' => 'nullable|email:rfc|max:150',
+            'social_facebook' => 'nullable|url:http,https|max:255',
+            'social_instagram' => 'nullable|url:http,https|max:255',
+            'social_tiktok' => 'nullable|url:http,https|max:255',
+        ]);
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => trim((string) $value)]
+            );
+        }
+
+        return back()->with(
+            'success',
+            'Información del footer actualizada correctamente.'
         );
     }
 
@@ -110,6 +204,87 @@ class AdminController extends Controller
         return back()->with(
             'success',
             '¡Número y mensaje de WhatsApp actualizados correctamente!'
+        );
+    }
+
+    /* ==========================
+       NOSOTROS
+       ========================== */
+    public function updateNosotros(Request $request)
+    {
+        $request->validate([
+            'cropped_nosotros_image' => 'nullable|string',
+            'nosotros_mensaje' => 'required|string|max:45',
+            'nosotros_slogan' => 'required|string|max:180',
+            'nosotros_descripcion' => 'required|string|max:600',
+            'nosotros_palabras_clave' => 'required|array|max:3',
+            'nosotros_palabras_clave.0' => 'required|string|max:40',
+            'nosotros_palabras_clave.*' => 'nullable|string|max:40',
+        ]);
+
+        $palabrasClave = collect($request->nosotros_palabras_clave)
+            ->map(fn ($palabra) => trim((string) $palabra))
+            ->filter()
+            ->unique()
+            ->take(3)
+            ->values();
+
+        if ($palabrasClave->isEmpty()) {
+            throw ValidationException::withMessages([
+                'nosotros_palabras_clave' => 'Agrega al menos una palabra clave.',
+            ]);
+        }
+
+        if ($request->filled('cropped_nosotros_image')) {
+            $imageBase64 = $this->decodeCroppedImage(
+                $request->cropped_nosotros_image
+            );
+
+            $fileName = 'nosotros/nosotros_' .
+                time() .
+                '_' .
+                Str::random(5) .
+                '.webp';
+
+            Storage::disk('public')->put($fileName, $imageBase64);
+
+            $imagenAnterior = Setting::where(
+                'key',
+                'nosotros_imagen'
+            )->value('value');
+
+            Setting::updateOrCreate(
+                ['key' => 'nosotros_imagen'],
+                ['value' => $fileName]
+            );
+
+            if (
+                $imagenAnterior &&
+                Storage::disk('public')->exists($imagenAnterior)
+            ) {
+                Storage::disk('public')->delete($imagenAnterior);
+            }
+        }
+
+        $valores = [
+            'nosotros_mensaje' => trim($request->nosotros_mensaje),
+            'nosotros_slogan' => trim($request->nosotros_slogan),
+            'nosotros_descripcion' => trim($request->nosotros_descripcion),
+            'nosotros_palabras_clave' => $palabrasClave->toJson(
+                JSON_UNESCAPED_UNICODE
+            ),
+        ];
+
+        foreach ($valores as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        return back()->with(
+            'success',
+            'Sección Nosotros actualizada correctamente.'
         );
     }
 
@@ -278,5 +453,36 @@ class AdminController extends Controller
         return response()->json([
             'success' => true
         ]);
+    }
+
+    private function decodeCroppedImage(string $image): string
+    {
+        if (! preg_match(
+            '/^data:image\/(?:png|jpeg|webp);base64,/',
+            $image
+        )) {
+            throw ValidationException::withMessages([
+                'cropped_nosotros_image' => 'La imagen recortada no es válida.',
+            ]);
+        }
+
+        $imageBase64 = base64_decode(
+            substr($image, strpos($image, ',') + 1),
+            true
+        );
+
+        if ($imageBase64 === false) {
+            throw ValidationException::withMessages([
+                'cropped_nosotros_image' => 'No se pudo procesar la imagen.',
+            ]);
+        }
+
+        if (strlen($imageBase64) > 5 * 1024 * 1024) {
+            throw ValidationException::withMessages([
+                'cropped_nosotros_image' => 'La imagen procesada supera el límite de 5 MB.',
+            ]);
+        }
+
+        return $imageBase64;
     }
 }

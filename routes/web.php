@@ -1,43 +1,105 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SolicitudServicioController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index']);
-
-// Rutas de Administración
-Route::get('/admin', [AdminController::class, 'index']);
-/* ==========================
-   LOGIN
-   ========================== */
-   // --- RUTAS DE AUTENTICACIÓN (PÚBLICAS) ---
-   Route::get('admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-   Route::post('admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
-   Route::post('admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-
-   // --- RUTAS DEL PANEL (PROTEGIDAS) ---
-   // El middleware 'auth:admin' bloquea a cualquiera que no sea administrador calificado
-   Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
-      
-      // Tu vista principal del panel
-      Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-      
-      // Más rutas del panel aquí...
-   });
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 /* ==========================
-   GENERAL
+   SOLICITUDES PÚBLICAS
    ========================== */
-Route::post('/admin/logo', [AdminController::class, 'updateLogo']);
-Route::post('/admin/whatsapp', [AdminController::class, 'updateWhatsapp']);
+Route::post('/solicitar-servicio', [
+    SolicitudServicioController::class,
+    'store',
+])->middleware('throttle:5,10')->name('solicitudes.store');
 
 /* ==========================
-   PLATOS
+   AUTENTICACIÓN ADMIN
    ========================== */
-Route::post('/admin/platos',[AdminController::class, 'storePlato']);
-Route::put('/admin/platos/{plato}',[AdminController::class, 'updatePlato']);
-Route::delete('/admin/platos/{plato}',[AdminController::class, 'destroyPlato']);
-Route::patch('/admin/platos/{plato}/toggle',[AdminController::class, 'togglePlato']);
-Route::post('/admin/platos/reordenar',[AdminController::class, 'reordenarPlatos']);
+Route::get('admin/login', [
+    AdminAuthController::class,
+    'showLogin',
+])->name('admin.login');
+
+Route::post('admin/login', [
+    AdminAuthController::class,
+    'login',
+])->name('admin.login.submit');
+
+/* ==========================
+   PANEL ADMIN PROTEGIDO
+   ========================== */
+Route::middleware('auth:admin')->prefix('admin')->group(function () {
+    Route::get('/', [
+        AdminController::class,
+        'index',
+    ])->name('admin.dashboard');
+
+    Route::post('/logout', [
+        AdminAuthController::class,
+        'logout',
+    ])->name('admin.logout');
+
+    Route::post('/logo', [
+        AdminController::class,
+        'updateLogo',
+    ])->name('admin.logo.update');
+
+    Route::post('/whatsapp', [
+        AdminController::class,
+        'updateWhatsapp',
+    ])->name('admin.whatsapp.update');
+
+    Route::post('/nosotros', [
+        AdminController::class,
+        'updateNosotros',
+    ])->name('admin.nosotros.update');
+
+    Route::post('/footer', [
+        AdminController::class,
+        'updateFooter',
+    ])->name('admin.footer.update');
+
+    Route::post('/platos', [
+        AdminController::class,
+        'storePlato',
+    ])->name('admin.platos.store');
+
+    Route::put('/platos/{plato}', [
+        AdminController::class,
+        'updatePlato',
+    ])->name('admin.platos.update');
+
+    Route::delete('/platos/{plato}', [
+        AdminController::class,
+        'destroyPlato',
+    ])->name('admin.platos.destroy');
+
+    Route::patch('/platos/{plato}/toggle', [
+        AdminController::class,
+        'togglePlato',
+    ])->name('admin.platos.toggle');
+
+    Route::post('/platos/reordenar', [
+        AdminController::class,
+        'reordenarPlatos',
+    ])->name('admin.platos.reordenar');
+
+    Route::patch('/solicitudes/{solicitud}/leer', [
+        SolicitudServicioController::class,
+        'marcarLeida',
+    ])->name('admin.solicitudes.leer');
+
+    Route::patch('/solicitudes/{solicitud}/estado', [
+        SolicitudServicioController::class,
+        'actualizarEstado',
+    ])->name('admin.solicitudes.estado');
+
+    Route::delete('/solicitudes/{solicitud}', [
+        SolicitudServicioController::class,
+        'destroy',
+    ])->name('admin.solicitudes.destroy');
+});

@@ -33,32 +33,63 @@ class AppServiceProvider extends ServiceProvider
         $whatsapp = '';
         $mensaje = '';
         $urlWhatsapp = '#';
+        $whatsappAvailable = false;
+        $footer = [
+            'logo' => null,
+            'description' => 'Comida casera preparada con dedicación en la comodidad de tu hogar.',
+            'service_area' => '',
+            'email' => '',
+            'facebook' => '',
+            'instagram' => '',
+            'tiktok' => '',
+        ];
 
         try {
+            $settings = Setting::whereIn('key', [
+                'navbar_logo',
+                'whatsapp_country_code',
+                'whatsapp_number',
+                'whatsapp_message',
+                'footer_description',
+                'footer_service_area',
+                'contact_email',
+                'social_facebook',
+                'social_instagram',
+                'social_tiktok',
+            ])->pluck('value', 'key');
 
-            $codigoPais = Setting::where(
-                'key',
-                'whatsapp_country_code'
-            )->value('value') ?? '51';
+            $codigoPais = $settings->get(
+                'whatsapp_country_code',
+                '51'
+            );
+            $numero = $settings->get('whatsapp_number');
+            $mensaje = $settings->get('whatsapp_message', '');
 
-            $numero = Setting::where(
-                'key',
-                'whatsapp_number'
-            )->value('value');
+            if (! empty($numero)) {
+                $whatsapp = $codigoPais . $numero;
+                $urlWhatsapp = "https://wa.me/$whatsapp";
+                $whatsappAvailable = true;
 
-            $mensaje = Setting::where(
-                'key',
-                'whatsapp_message'
-            )->value('value');
-
-            $whatsapp = $codigoPais . $numero;
-
-            $urlWhatsapp = "https://wa.me/$whatsapp";
-
-            if (!empty($mensaje)) {
-                $urlWhatsapp .= '?text=' . urlencode($mensaje);
+                if (! empty($mensaje)) {
+                    $urlWhatsapp .= '?text=' . urlencode($mensaje);
+                }
             }
 
+            $footer = [
+                'logo' => $settings->get('navbar_logo'),
+                'description' => $settings->get(
+                    'footer_description',
+                    $footer['description']
+                ),
+                'service_area' => $settings->get(
+                    'footer_service_area',
+                    ''
+                ),
+                'email' => $settings->get('contact_email', ''),
+                'facebook' => $settings->get('social_facebook', ''),
+                'instagram' => $settings->get('social_instagram', ''),
+                'tiktok' => $settings->get('social_tiktok', ''),
+            ];
         } catch (\Throwable $e) {
             logger()->error($e->getMessage());
         }
@@ -66,5 +97,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('whatsapp', $whatsapp);
         View::share('whatsapp_message', $mensaje);
         View::share('whatsapp_url', $urlWhatsapp);
+        View::share('whatsapp_available', $whatsappAvailable);
+        View::share('footer', $footer);
     }
 }
