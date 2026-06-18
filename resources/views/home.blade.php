@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div class="bg-container">
+<header id="main-section" class="bg-container">
     <div class="container main-container">
         <div class="row align-items-center h-100">
             <div class="container-text col-md-6 text-center text-md-start pe-4 my-auto">
@@ -44,7 +44,10 @@
                             <span class="ms-2 d-xl-none fs-5">WhatsApp</span>
                         </div>
                     </a>
-                    <button class="btn btn-lg btn-contactar fw-bold d-flex align-items-center">
+                    <button type="button"
+                        class="btn btn-lg btn-contactar fw-bold d-flex align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#solicitudServicioModal">
                         <i class="fa-solid fa-bell-concierge me-2 fs-2"></i>
                         <span class="d-none d-xl-block">Solicitar servicio</span>
                         <span class="d-xl-none">Contactar</span>
@@ -53,10 +56,15 @@
             </div>
         </div>
     </div>
-</div>
+</header>
 
 {{-- CARRUSEL DE PLATOS --}}
-<div class="container container-platos mt-5 position-relative">
+<section id="platos" class="container container-platos pt-5 pb-4"
+    aria-labelledby="platos-title">
+    <h2 id="platos-title" class="text-center fw-bold mb-4">
+        Nuestros platos
+    </h2>
+    <div class="position-relative">
     <div class="swiper swiper-platos">
         <div class="swiper-wrapper">
             @forelse($platos as $plato)
@@ -97,12 +105,15 @@
     </div>
     <div class="swiper-button-prev text-dark user-select-none"></div>
     <div class="swiper-button-next text-dark user-select-none"></div>
-</div>
+    </div>
+</section>
 
 {{-- COMO FUNCIONA --}}
-<div id="como-funciona" class="bg-container">
-    <div class="container pt-3 mt-2 pb-3 mb-2 position-relative">
-        <h3 class="text-center fw-bold mb-4 title-curved-line">¿Cómo Funciona?</h3>
+<section id="como-funciona"
+    class="bg-container"
+    aria-labelledby="como-funciona-title">
+    <div class="container py-5 position-relative">
+        <h2 id="como-funciona-title" class="text-center fw-bold mb-4 title-curved-line">¿Cómo Funciona?</h2>
         <div class="container-operation row mx-2 mx-sm-0 g-4 g-lg-0">
             <div class="col-6 col-sm d-flex flex-column align-items-center text-center">
                 <div class="circle-number">
@@ -157,7 +168,137 @@
             </div>
         </div>
     </div>
-</div>
+</section>
+
+{{-- NOSOTROS --}}
+<section id="nosotros"
+    class="container container-nosotros py-5"
+    aria-labelledby="nosotros-title">
+    <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-lg-5">
+            <div class="nosotros-visual mx-auto">
+                <img
+                    src="{{ $nosotros['imagen']
+                        ? asset('storage/' . $nosotros['imagen'])
+                        : asset('images/fondo-container-main-zoom-no.png') }}"
+                    alt="Equipo de Cocina en Casa">
+                <span class="nosotros-badge">
+                    <i class="fa-solid fa-heart me-2"></i>
+                    {{ $nosotros['mensaje'] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="col-lg-7 text-center text-lg-start">
+            <h2 id="nosotros-title" class="fw-bold mb-4 title-curved-line title-curved-line-start">
+                ¿Quiénes somos?
+            </h2>
+            <p class="lead text-dark mb-3">
+                {{ $nosotros['slogan'] }}
+            </p>
+            <p class="text-muted mb-4">
+                {{ $nosotros['descripcion'] }}
+            </p>
+
+            <div class="row g-3 justify-content-center justify-content-lg-start">
+                @foreach($nosotros['palabras_clave'] as $palabraClave)
+                    <div class="col-sm">
+                        <div class="nosotros-value h-100">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>{{ $palabraClave }}</span>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- CONTACTO --}}
+<section id="contacto"
+    class="contact-section"
+    aria-labelledby="contacto-title"
+    data-contact-section
+    data-scroll-on-load="{{ $errors->solicitudServicio->any() && old('origen') === 'contacto' ? 'true' : 'false' }}">
+    <div class="container py-5">
+        <div class="row align-items-center g-4 g-lg-5">
+            <div class="col-lg-5">
+                <span class="contact-eyebrow">Estamos para ayudarte</span>
+                <h2 id="contacto-title"
+                    class="fw-bold mt-2 mb-4 title-curved-line title-curved-line-start">
+                    Conversemos sobre lo que necesitas
+                </h2>
+                <p class="text-muted mb-4">
+                    Envíanos una solicitud y nos pondremos en contacto contigo.
+                    Si prefieres una respuesta más rápida, también puedes
+                    escribirnos directamente por WhatsApp.
+                </p>
+
+                <div class="contact-whatsapp-card">
+                    <span class="contact-whatsapp-icon">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </span>
+                    <div class="flex-grow-1">
+                        <h3 class="h5 fw-bold mb-1">¿Prefieres WhatsApp?</h3>
+                        <p class="small text-muted mb-3">
+                            Cuéntanos qué necesitas y conversemos directamente.
+                        </p>
+                        <a href="{{ $whatsapp_url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn-whatsapp fw-semibold">
+                            <i class="fa-brands fa-whatsapp me-2"></i>
+                            Escribir por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="contact-form-card">
+                    <div class="mb-4">
+                        <h3 class="h4 fw-bold mb-1">Solicitar servicio</h3>
+                        <p class="text-muted small mb-0">
+                            Déjanos tus datos y nos comunicaremos contigo.
+                        </p>
+                    </div>
+
+                    <form action="{{ route('solicitudes.store') }}"
+                        method="POST"
+                        data-service-request-form
+                        novalidate>
+                        @csrf
+
+                        @include('partials.service-request-fields', [
+                            'prefix' => 'solicitudContacto',
+                            'source' => 'contacto',
+                            'showErrors' => old('origen') === 'contacto',
+                        ])
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <span class="d-inline-block"
+                                data-service-submit-wrapper
+                                @if(old('origen') !== 'contacto' || !old('acepta_contacto'))
+                                    title="Marca la casilla de aceptación para enviar la solicitud"
+                                    tabindex="0"
+                                @endif>
+                                <button type="submit"
+                                    class="btn bg-color px-4"
+                                    data-service-submit
+                                    {{ old('origen') === 'contacto' && old('acepta_contacto') ? '' : 'disabled' }}>
+                                    <i class="fa-regular fa-paper-plane me-2"></i>
+                                    Enviar solicitud
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@include('partials.service-request-modal')
 @endsection
 
 @push('scripts')
