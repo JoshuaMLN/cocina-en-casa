@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top"
+    data-smart-navbar>
     <div class="container">
 
         <!-- Logo -->
@@ -22,7 +23,10 @@
 
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Mostrar menú de navegación">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -31,23 +35,23 @@
             <!-- Menú centrado -->
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item mx-3">
-                    <a class="nav-link active" href="/">Inicio</a>
+                    <a class="nav-link" href="{{ url('/') }}#main-section" data-section-link>Inicio</a>
                 </li>
 
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="#">Servicios</a>
+                    <a class="nav-link" href="{{ url('/') }}#platos" data-section-link>Servicios</a>
                 </li>
 
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="#como-funciona">Cómo funciona</a>
+                    <a class="nav-link" href="{{ url('/') }}#como-funciona" data-section-link>Cómo funciona</a>
                 </li>
 
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="#">Nosotros</a>
+                    <a class="nav-link" href="{{ url('/') }}#nosotros" data-section-link>Nosotros</a>
                 </li>
 
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="#">Contacto</a>
+                    <a class="nav-link" href="{{ url('/') }}#contacto" data-section-link>Contacto</a>
                 </li>
 
                 <li class="nav-item item-wsp d-lg-none">

@@ -6,6 +6,22 @@
     padding-bottom: 12px;
 }
 
+[data-smart-navbar] {
+    transform: translateY(0);
+    transition: transform 220ms ease;
+    will-change: transform;
+}
+
+[data-smart-navbar].smart-navbar-hidden {
+    transform: translateY(calc(-100% - 2px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-smart-navbar] {
+        transition: none;
+    }
+}
+
 .navbar .nav-link {
     position: relative;
     font-weight: 500;
@@ -14,6 +30,17 @@
 
 .navbar .nav-link.active {
     color: var(--primary-color) !important;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.navbar-toggler:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
 }
 
 /*Linea debajo de nav-link activo */

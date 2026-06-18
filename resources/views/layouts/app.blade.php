@@ -33,6 +33,16 @@
             <i class="fa-brands fa-whatsapp"></i> Reservar ahora
         </a>
 
+        {{-- BOTÓN PARA VOLVER AL INICIO --}}
+        <button type="button"
+            class="back-to-top"
+            data-back-to-top
+            aria-label="Volver al inicio de la página"
+            aria-hidden="true"
+            tabindex="-1">
+            <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        </button>
+
     {{----------------}}
     {{-- JAVASCRIPT --}}
     {{----------------}}
