@@ -144,4 +144,116 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+/*---------------------------------------------------*/
+/* SECCIÓN NOSOTROS */
+/*---------------------------------------------------*/
+    const nosotrosForm = document.getElementById('nosotrosForm');
+    const nosotrosImageInput = document.getElementById('nosotrosImageInput');
+    const croppedNosotrosImage = document.getElementById('cropped_nosotros_image');
+    const nosotrosPreview = document.getElementById('nosotrosPreview');
+    const nosotrosPreviewContainer = document.getElementById('nosotrosPreviewContainer');
+
+    nosotrosImageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        const allowedTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Archivo no permitido',
+                text: 'Solo se permiten imágenes JPG, PNG o WEBP'
+            });
+            nosotrosImageInput.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            openCropper({
+                title: 'Recortar imagen de Nosotros',
+                imageSrc: event.target.result,
+                aspectRatio: 4 / 3,
+                width: 1200,
+                height: 900,
+                mimeType: 'image/webp',
+                quality: 0.88,
+
+                onCrop: function(base64data) {
+                    croppedNosotrosImage.value = base64data;
+                    nosotrosPreview.src = base64data;
+                    nosotrosPreviewContainer.classList.remove('d-none');
+                }
+            });
+
+            nosotrosImageInput.value = '';
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    document.querySelectorAll('[data-character-count]').forEach(counter => {
+        const input = document.getElementById(counter.dataset.characterCount);
+
+        const updateCount = () => {
+            counter.textContent = input.value.length;
+        };
+
+        input.addEventListener('input', updateCount);
+        updateCount();
+    });
+
+    const footerForm = document.getElementById('footerForm');
+
+    footerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: '¿Actualizar el footer?',
+            text: 'Los cambios se mostrarán en la parte inferior del sitio.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, actualizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            showLoadingModal(
+                'Actualizando Footer',
+                'Guardando información de contacto...'
+            );
+
+            footerForm.submit();
+        });
+    });
+
+    nosotrosForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: '¿Actualizar la sección Nosotros?',
+            text: 'Los cambios se mostrarán en la página principal.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, actualizar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            showLoadingModal(
+                'Actualizando Nosotros',
+                'Guardando imagen y contenido...'
+            );
+
+            nosotrosForm.submit();
+        });
+    });
+
 });

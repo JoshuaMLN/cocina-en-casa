@@ -87,7 +87,10 @@ document.addEventListener('DOMContentLoaded', function () {
             width: globalThis.cropConfig.width,
             height: globalThis.cropConfig.height
         });
-        const base64data = canvas.toDataURL('image/png');
+        const base64data = canvas.toDataURL(
+            globalThis.cropConfig.mimeType ?? 'image/png',
+            globalThis.cropConfig.quality ?? 0.92
+        );
         globalThis.cropConfig.onCrop(base64data);
         cropModal.hide();
     });
