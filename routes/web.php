@@ -114,6 +114,12 @@ Route::middleware(['auth:admin', 'auth.session'])
         'marcarLeida',
     ])->name('admin.solicitudes.leer');
 
+    Route::get('/solicitudes/snapshot', [
+        SolicitudServicioController::class,
+        'snapshot',
+    ])->middleware('throttle:30,1')
+        ->name('admin.solicitudes.snapshot');
+
     Route::patch('/solicitudes/{solicitud}/estado', [
         SolicitudServicioController::class,
         'actualizarEstado',

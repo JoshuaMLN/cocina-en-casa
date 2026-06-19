@@ -33,3 +33,31 @@
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
+.solicitudes-sync-status {
+    min-width: 150px;
+    text-align: right;
+}
+
+.solicitudes-refresh-spin {
+    animation: solicitudes-refresh-spin 700ms linear infinite;
+}
+
+@keyframes solicitudes-refresh-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .solicitudes-sync-status {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .solicitudes-refresh-spin {
+        animation: none;
+    }
+}

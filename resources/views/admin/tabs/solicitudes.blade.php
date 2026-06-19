@@ -1,5 +1,5 @@
 <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <div>
             <h5 class="mb-1">Solicitudes de servicio</h5>
             <small class="text-muted">
@@ -7,10 +7,24 @@
             </small>
         </div>
 
-        <span class="badge text-bg-light border fs-6">
-            {{ $solicitudes->total() }}
-            {{ $solicitudes->total() === 1 ? 'solicitud' : 'solicitudes' }}
-        </span>
+        <div class="d-flex align-items-center flex-wrap gap-2">
+            <small class="text-muted solicitudes-sync-status"
+                data-solicitudes-sync-status
+                aria-live="polite">
+                Actualización automática activa
+            </small>
+            <button type="button"
+                class="btn btn-sm btn-outline-secondary"
+                data-solicitudes-refresh>
+                <i class="fa-solid fa-rotate me-1"
+                    aria-hidden="true"></i>
+                Actualizar
+            </button>
+            <span class="badge text-bg-light border fs-6">
+                {{ $solicitudes->total() }}
+                {{ $solicitudes->total() === 1 ? 'solicitud' : 'solicitudes' }}
+            </span>
+        </div>
     </div>
 
     @if($solicitudes->isEmpty())

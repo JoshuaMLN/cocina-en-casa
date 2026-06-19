@@ -91,6 +91,9 @@ class AdminController extends Controller
         $solicitudesNoLeidas = SolicitudServicio::whereNull(
             'leido_at'
         )->count();
+        $solicitudesLatestId = (int) (
+            SolicitudServicio::max('id') ?? 0
+        );
         $adminSettingsUnlocked = (int) session(
             'admin.settings_verified_at',
             0
@@ -108,6 +111,7 @@ class AdminController extends Controller
                 'platos',
                 'solicitudes',
                 'solicitudesNoLeidas',
+                'solicitudesLatestId',
                 'adminSettingsUnlocked'
             )
         );

@@ -81,7 +81,14 @@
                 @include('admin.tabs.platos')
             </div>
             <div class="tab-pane fade" id="solicitudes">
-                @include('admin.tabs.solicitudes')
+                <div data-solicitudes-inbox
+                    data-snapshot-url="{{ route('admin.solicitudes.snapshot') }}"
+                    data-latest-id="{{ $solicitudesLatestId }}"
+                    data-total="{{ $solicitudes->total() }}"
+                    data-unread="{{ $solicitudesNoLeidas }}"
+                    data-poll-interval="30000">
+                    @include('admin.tabs.solicitudes')
+                </div>
             </div>
             <div class="tab-pane fade" id="configuracion">
                 @include('admin.tabs.configuracion')
