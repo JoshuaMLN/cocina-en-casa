@@ -1,0 +1,148 @@
+.admin-settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(13, 110, 253, 0.16);
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(13, 110, 253, 0.08),
+            rgba(255, 255, 255, 0.92)
+        );
+}
+
+.admin-settings-kicker {
+    color: var(--bs-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.admin-settings-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    padding: 0.55rem 0.85rem;
+    border-radius: 50rem;
+    background-color: rgba(25, 135, 84, 0.12);
+    color: #146c43;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.settings-tab-lock {
+    font-size: 0.7rem;
+    opacity: 0.58;
+}
+
+.settings-card {
+    border: 0;
+    border-radius: 18px;
+}
+
+.settings-card .card-body {
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.settings-card-icon,
+.settings-unlock-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bs-primary);
+}
+
+.settings-card-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    border-radius: 14px;
+    background-color: rgba(13, 110, 253, 0.1);
+    font-size: 1.25rem;
+}
+
+.settings-current-value {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    overflow-wrap: anywhere;
+}
+
+.settings-current-value span {
+    color: #6c757d;
+    font-size: 0.78rem;
+}
+
+.password-strength-bar {
+    height: 5px;
+    margin: 0.6rem 0 0.35rem;
+    overflow: hidden;
+    border-radius: 50rem;
+    background-color: #e9ecef;
+}
+
+.password-strength-bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background-color: #dc3545;
+    transition: width 180ms ease, background-color 180ms ease;
+}
+
+.password-strength[data-level="2"] .password-strength-bar span {
+    background-color: #fd7e14;
+}
+
+.password-strength[data-level="3"] .password-strength-bar span {
+    background-color: #0d6efd;
+}
+
+.password-strength[data-level="4"] .password-strength-bar span {
+    background-color: #198754;
+}
+
+.password-strength small {
+    color: #6c757d;
+}
+
+.settings-unlock-modal {
+    overflow: hidden;
+    border: 0;
+    border-radius: 22px;
+    box-shadow: 0 24px 65px rgba(33, 37, 41, 0.2);
+}
+
+.settings-unlock-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(13, 110, 253, 0.18),
+            rgba(13, 110, 253, 0.06)
+        );
+    font-size: 1.8rem;
+}
+
+@media (max-width: 575.98px) {
+    .admin-settings-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .password-strength-bar span {
+        transition: none;
+    }
+}

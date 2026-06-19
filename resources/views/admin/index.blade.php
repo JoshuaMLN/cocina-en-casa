@@ -56,6 +56,21 @@
                     {{ $solicitudesNoLeidas }}
                 </span>
             </button>
+
+            <button type="button" class="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#configuracion"
+                data-admin-settings-tab
+                data-settings-unlocked="{{ $adminSettingsUnlocked ? 'true' : 'false' }}"
+                role="tab"
+                aria-controls="configuracion"
+                aria-selected="false">
+                <i class="fa-solid fa-gear me-1"></i>
+                Configuración
+                <i class="fa-solid fa-lock ms-1 settings-tab-lock {{ $adminSettingsUnlocked ? 'd-none' : '' }}"
+                    data-settings-tab-lock
+                    aria-hidden="true"></i>
+            </button>
         </div>
 
         <div class="tab-content pt-4">
@@ -68,6 +83,9 @@
             <div class="tab-pane fade" id="solicitudes">
                 @include('admin.tabs.solicitudes')
             </div>
+            <div class="tab-pane fade" id="configuracion">
+                @include('admin.tabs.configuracion')
+            </div>
         </div>
 
     </div>
@@ -76,6 +94,7 @@
 
 {{-- MODAL DE CROPPER --}}
 @include('admin.partials.crop-modal')
+@include('admin.partials.settings-unlock-modal')
 
 @endsection
 

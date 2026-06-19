@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use App\Models\Setting;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Schema;
@@ -29,6 +32,27 @@ class AppServiceProvider extends ServiceProvider
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }
+
+        RateLimiter::for('admin-settings-unlock', function (Request $request) {
+            $adminId = $request->user('admin')?->getAuthIdentifier();
+
+            return Limit::perMinutes(10, 5)
+                ->by('admin-settings-unlock:' . ($adminId ?? $request->ip()))
+                ->response(fn () => response()->json([
+                    'message' => 'Demasiados intentos. Espera unos minutos antes de volver a intentarlo.',
+                ], 429));
+        });
+
+        RateLimiter::for('admin-settings-update', function (Request $request) {
+            $adminId = $request->user('admin')?->getAuthIdentifier();
+
+            return Limit::perMinute(10)
+                ->by('admin-settings-update:' . ($adminId ?? $request->ip()))
+                ->response(fn () => back()->with(
+                    'error',
+                    'Realizaste demasiados cambios seguidos. Espera un minuto e inténtalo nuevamente.'
+                ));
+        });
 
         $whatsapp = '';
         $mensaje = '';

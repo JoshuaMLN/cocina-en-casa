@@ -1,6 +1,7 @@
 import './tabs/general.js';
 import './tabs/platos.js';
 import './tabs/solicitudes.js';
+import './tabs/configuracion.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 

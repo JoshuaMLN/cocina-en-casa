@@ -91,6 +91,10 @@ class AdminController extends Controller
         $solicitudesNoLeidas = SolicitudServicio::whereNull(
             'leido_at'
         )->count();
+        $adminSettingsUnlocked = (int) session(
+            'admin.settings_verified_at',
+            0
+        ) >= now()->subMinutes(10)->timestamp;
 
         return view(
             'admin.index',
@@ -103,7 +107,8 @@ class AdminController extends Controller
                 'footer',
                 'platos',
                 'solicitudes',
-                'solicitudesNoLeidas'
+                'solicitudesNoLeidas',
+                'adminSettingsUnlocked'
             )
         );
     }

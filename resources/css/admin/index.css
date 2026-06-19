@@ -1,6 +1,7 @@
 @import './tabs/general.css';
 @import './tabs/platos.css';
 @import './tabs/solicitudes.css';
+@import './tabs/configuracion.css';
 
 .container-image-crop {
     height: 500px;

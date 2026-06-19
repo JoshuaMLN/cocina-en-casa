@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminAccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SolicitudServicioController;
@@ -32,7 +33,9 @@ Route::post('admin/login', [
 /* ==========================
    PANEL ADMIN PROTEGIDO
    ========================== */
-Route::middleware('auth:admin')->prefix('admin')->group(function () {
+Route::middleware(['auth:admin', 'auth.session'])
+    ->prefix('admin')
+    ->group(function () {
     Route::get('/', [
         AdminController::class,
         'index',
@@ -62,6 +65,24 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
         AdminController::class,
         'updateFooter',
     ])->name('admin.footer.update');
+
+    Route::post('/configuracion/desbloquear', [
+        AdminAccountController::class,
+        'unlock',
+    ])->middleware('throttle:admin-settings-unlock')
+        ->name('admin.settings.unlock');
+
+    Route::patch('/configuracion/correo', [
+        AdminAccountController::class,
+        'updateEmail',
+    ])->middleware('throttle:admin-settings-update')
+        ->name('admin.settings.email');
+
+    Route::patch('/configuracion/contrasena', [
+        AdminAccountController::class,
+        'updatePassword',
+    ])->middleware('throttle:admin-settings-update')
+        ->name('admin.settings.password');
 
     Route::post('/platos', [
         AdminController::class,
@@ -102,4 +123,4 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
         SolicitudServicioController::class,
         'destroy',
     ])->name('admin.solicitudes.destroy');
-});
+    });
